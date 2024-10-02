@@ -24,10 +24,6 @@ app.post("/tasks",(request, response) => {
 });
 
 
-app.get("/oi", (request, response) => {
-    return response.status(200).json("Hello World");
-});
-
 app.get("/tasks", (request, response) => {
     return response.status(200).json(tasks);
 });
@@ -61,6 +57,31 @@ app.delete("/tasks/:id", (request, response) => {
 });
 
 
+app.put("/tasks/:id", (request, response) => {                              //TODO  not working
+    let idRequest = request.params.id;
+    let bodyRequest = request.body;
+
+    const taskFound = tasks.findIndex((task) => task.id == idRequest);      //possible problem
+
+    if(taskFound === -1){
+        return response.status(404).json({message: "Task not found"});
+    }
+
+    let task = tasks[taskFound];
+    task = {
+        id: currentID++,
+        title: bodyRequest.titulo,
+        description: bodyRequest.description,
+        status: bodyRequest.status,
+    };
+
+    return response.status(200).json({message: `Task updated: `,taskFound});
+});
+
+
+app.get("/oi", (request, response) => {
+    return response.status(200).json("Hello World");
+});
 
 app.listen(port, () => {
     console.log("Servidor opened at Port 3000");
