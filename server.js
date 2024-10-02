@@ -36,11 +36,28 @@ app.get("/tasks/:id", (request, response) => {
     let idRequest = request.params.id;
 
     const taskFound = tasks.find((task) => task.id == idRequest);
+
     if(!taskFound){
         return response.status(404).json({message: "Task not found"});
     }
 
     return response.status(200).json(taskFound);
+});
+
+
+app.delete("/tasks/:id", (request, response) => {
+    let idRequest = request.params.id;
+
+    const taskFound = tasks.find((task) => task.id == idRequest);
+
+    if(!taskFound){
+        return response.status(404).json({message: "Task not found"});
+    }
+
+    const taskIndex = tasks.indexOf(taskFound);
+    tasks.splice(taskIndex, 1);
+
+    return response.status(200).json({message: `Task deleted: ${taskFound.id}`});
 });
 
 
